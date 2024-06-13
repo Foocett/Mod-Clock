@@ -1,3 +1,5 @@
+const socket = io();
+
 document.addEventListener("DOMContentLoaded", function() {
     function startTime() {
         const today = new Date();
@@ -16,6 +18,12 @@ document.addEventListener("DOMContentLoaded", function() {
         return i;
     }
 
+    function setProgress(percentage) {
+        const progressBar = document.getElementById('progress-bar');
+        progressBar.style.width = percentage + '%';
+        progressBar.textContent = percentage + '%';
+    }
 
     startTime();
+    socket.emit("test");
 })
