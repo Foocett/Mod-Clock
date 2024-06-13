@@ -15,6 +15,7 @@ io.on("connection", (socket) => {
     socket.on("test", () => {
         console.log("test")
     })
+    console.log("skdjflj")
 });
 
 server.listen(port, () => {
