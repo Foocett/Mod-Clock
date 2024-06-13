@@ -14,27 +14,35 @@ body {
     grid-row-gap: 0;
 }
 
-div {
-    border: solid 1px black;
-}
 
 .body-div {
     display: flex;
+    /*border: solid 1px black*/
 }
 
 .letter-day {
-    grid-area: 1 / 1 / 2 / 2;
-    align-items: center;
+    grid-area: 1 / 1 / 2 / 3;
+    align-items: flex-end;
+    justify-content: center;
+    padding-left: 30px;
+    display: flex;
 }
 
-.scrolling-text {
-    grid-area: 1 / 2 / 2 / 3;
+#letter-text {
+    font-size: 162px;
+    height: min-content;
 }
 
 .mod-number {
     grid-area: 2 / 1 / 4 / 3;
     align-items: center;
     justify-content: center;
+    display: flex;
+
+}
+
+#mod-text {
+    font-size: 220px;
 }
 
 .real-time {
@@ -50,11 +58,12 @@ div {
 }
 
 #progress-container {
-    border: solid 1px black;
+    border: solid 8px black;
     width: 85%;
     height: 65%;
     border-radius: 120px;
     overflow: hidden;
+    position: relative;
 }
 
 #progress-bar {
@@ -67,7 +76,7 @@ div {
     border-radius: 120px 0 0 120px;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: absolute;
     overflow: hidden;
 }
 
@@ -79,8 +88,16 @@ div {
     width: 200%; /* Double the width for smooth looping */
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 10 Q 25 0, 50 10 T 100 10 V 20 H 0 Z" fill="%23b0b0b0"/><path d="M0 15 Q 25 5, 50 15 T 100 15 V 20 H 0 Z" fill="%23808080"/></svg>') repeat-x;
     animation: wave-animation 5s linear infinite;
-    transform: translateX(0%);
+    background-size: 50% 100%;
     transition: transform 0.5s linear;
+}
+
+#mask {
+    height: 100%;
+    width: 70%;
+    background-color: inherit;
+    overflow: hidden;
+    clip-path: inset(0 0 0 0);
 }
 
 @keyframes wave-animation {
@@ -98,5 +115,5 @@ p {
 }
 
 #live-time {
-    font-size: 200px;
+    font-size: 240px;
 }

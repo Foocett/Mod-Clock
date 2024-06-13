@@ -4,16 +4,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=3840, height=1100,initial-scale=1.0">
-        <title>Mod CLock</title>
+        <title>Mod Clock</title>
         <link rel="stylesheet" href="index.css">
         <script src="index.js"></script>
         <script src="/socket.io/socket.io.js"></script>
     </head>
     <body>
         <div class="body-div letter-day">
-            <p id="letter-text">X-Day</p>
-        </div>
-        <div class="body-div scrolling-text">
+            <p id="letter-text">A-Day</p>
         </div>
         <div class="body-div mod-number">
             <p id="mod-text">Mod --</p>
@@ -23,8 +21,10 @@
         </div>
         <div class="body-div scroll-bar">
             <div id="progress-container">
-                <div id="progress-bar">
-                    <div id="wave"></div>
+                <div id="mask">
+                    <div id="progress-bar">
+                        <div id="wave"></div>
+                    </div>
                 </div>
             </div>
         </div>
