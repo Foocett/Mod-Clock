@@ -179,5 +179,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Close modals with escape key
+    window.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            if (popupModal.style.display === 'block') {
+                popupModal.style.display = 'none';
+            }
+            if (addUserModal.style.display === 'block') {
+                addUserModal.style.display = 'none';
+            }
+            if (auditLogModal.style.display === 'block') {
+                auditLogModal.style.display = 'none';
+            }
+        }
+    });
+
     loadUsers();
 });
