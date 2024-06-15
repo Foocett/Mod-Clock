@@ -1,21 +1,23 @@
 body {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     height: 100vh;
     font-family: Arial, sans-serif;
-    background-color: #121212;
+    background: radial-gradient(circle at center, #1e1e1e 0%, #121212 100%);
     color: #ffffff;
     margin: 0;
     padding: 0;
-    background: radial-gradient(circle at center, #1e1e1e 0%, #121212 100%);
+    overflow: hidden; /* Prevent body from scrolling */
 }
 
 .container {
     text-align: center;
     width: 80vw;
     max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h2 {
@@ -42,7 +44,7 @@ button:hover {
     transform: scale(1.05);
 }
 
-.user-box {
+.user-box, .audit-log-box {
     background-color: #1e1e1e;
     border-radius: 10px;
     border: 1px solid #333333;
@@ -52,7 +54,6 @@ button:hover {
     padding: 20px;
     box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.5);
     background: linear-gradient(145deg, #1c1c1c, #202020);
-    margin: 0 auto;
 }
 
 ul {
@@ -62,6 +63,7 @@ ul {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center; /* Center the items horizontally */
 }
 
 li {
@@ -106,7 +108,7 @@ li button.remove-button:hover {
     background-color: #b71c1c;
 }
 
-#popupModal, #addUserModal {
+#popupModal, #addUserModal, #auditLogModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -121,19 +123,43 @@ li button.remove-button:hover {
 
 .modal-content {
     background-color: #2c2c2c;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 5% auto; /* 5% from the top and centered */
     padding: 20px;
     border: 1px solid #444444;
-    width: 80%; /* Could be more or less, depending on screen size */
-    max-width: 500px;
+    width: 90%; /* Responsive width */
+    max-width: 550px; /* Max width for large screens */
+    max-height: 90vh; /* Max height for the viewport */
     text-align: center;
     border-radius: 5px;
     animation: slideIn 0.3s;
+    overflow-y: auto; /* Scroll within the modal content */
     box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.5);
     background: linear-gradient(145deg, #292929, #2e2e2e);
 }
 
-.close, .close-add {
+.audit-log-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2c2c2c;
+    border: 1px solid #444444;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.audit-log-entry h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+}
+
+.audit-log-entry p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.close, .close-add, .close-audit {
     color: #aaaaaa;
     float: right;
     font-size: 28px;
@@ -143,7 +169,9 @@ li button.remove-button:hover {
 .close:hover,
 .close:focus,
 .close-add:hover,
-.close-add:focus {
+.close-add:focus,
+.close-audit:hover,
+.close-audit:focus {
     color: #ffffff;
     text-decoration: none;
     cursor: pointer;

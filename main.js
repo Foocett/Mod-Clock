@@ -44,6 +44,53 @@ io.use(sharedSession(sessionMiddleware, {
     autoSave: true // Automatically save sessions after each request
 }));
 
+// Function to log user activity
+function logUserActivity(username, type) {
+    const logEntry = {
+        type,
+        username,
+        timestamp: new Date().toISOString()
+    };
+
+    fs.readFile('auditLog.json', (err, data) => {
+        let logData = [];
+        if (!err) {
+            try {
+                logData = JSON.parse(data);
+            } catch (parseErr) {
+                console.error('Error parsing audit log:', parseErr);
+            }
+        }
+        logData.push(logEntry);
+
+        fs.writeFile('auditLog.json', JSON.stringify(logData, null, 2), (writeErr) => {
+            if (writeErr) {
+                console.error('Error writing to audit log:', writeErr);
+            } else {
+                console.log('Audit log updated');
+            }
+        });
+    });
+}
+
+// Function to read the audit log
+function getAuditLog(callback) {
+    fs.readFile('auditLog.json', (err, data) => {
+        if (err) {
+            console.error('Error reading audit log:', err);
+            callback([]);
+            return;
+        }
+        try {
+            const logData = JSON.parse(data);
+            callback(logData);
+        } catch (parseErr) {
+            console.error('Error parsing audit log:', parseErr);
+            callback([]);
+        }
+    });
+}
+
 // This basically tells the server to read from the "Public" file folder as the root folder
 app.use(express.static(path.join(__dirname, 'Public')));
 
@@ -106,6 +153,12 @@ io.on('connection', (socket) => {
         callback(userData);
     });
 
+    // Handle get-audit-log event
+    socket.on('get-audit-log', (callback) => {
+        console.log('get-audit-log event received');
+        getAuditLog(callback);
+    });
+
     // Handle admin password validation
     socket.on('validate-admin-password', (data, callback) => {
         if (data.password === config["adminPassword"]) {
@@ -132,6 +185,9 @@ io.on('connection', (socket) => {
         const user = userData.find(user => user.username === username && user.password === password);
 
         if (user) {
+            // Log user activity
+            logUserActivity(username, 'User Login');
+
             // Save the session upon successful authentication
             socket.handshake.session.authenticated = true;
             socket.handshake.session.save((err) => {

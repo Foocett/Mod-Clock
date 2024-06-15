@@ -3,11 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const userList = document.getElementById('userList');
     const popupModal = document.getElementById('popupModal');
     const addUserModal = document.getElementById('addUserModal');
+    const auditLogModal = document.getElementById('auditLogModal');
     const popupUsername = document.getElementById('popupUsername');
     const popupPassword = document.getElementById('popupPassword');
     const closeBtn = document.querySelector('.close');
     const closeAddBtn = document.querySelector('.close-add');
+    const closeAuditBtn = document.querySelector('.close-audit');
     const openAddUserModalButton = document.getElementById('openAddUserModalButton');
+    const viewAuditLogButton = document.getElementById('viewAuditLogButton');
+    const auditLogList = document.getElementById('auditLogList');
 
     function loadUsers() {
         console.log('Emitting get-users event');
@@ -87,6 +91,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function loadAuditLog() {
+        console.log('Emitting get-audit-log event');
+        socket.emit('get-audit-log', (log) => {
+            console.log('Received audit log:', log);
+            auditLogList.innerHTML = '';
+            log.forEach((entry) => {
+                const div = document.createElement('div');
+                div.classList.add('audit-log-entry');
+
+                const title = document.createElement('h3');
+                title.textContent = entry.type;
+                div.appendChild(title);
+
+                const username = document.createElement('p');
+                username.textContent = `Username: ${entry.username}`;
+                div.appendChild(username);
+
+                const timestamp = document.createElement('p');
+                timestamp.textContent = `Timestamp: ${entry.timestamp}`;
+                div.appendChild(timestamp);
+
+                auditLogList.appendChild(div);
+            });
+        });
+    }
+
     document.getElementById('addUserForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent form from refreshing the page
         const newUsername = document.getElementById('newUsername').value;
@@ -110,6 +140,12 @@ document.addEventListener('DOMContentLoaded', function() {
         addUserModal.style.display = 'block';
     });
 
+    // Open the audit log modal
+    viewAuditLogButton.addEventListener('click', function() {
+        loadAuditLog();
+        auditLogModal.style.display = 'block';
+    });
+
     // Close the popup modal when the close button is clicked
     closeBtn.addEventListener('click', function() {
         popupModal.style.display = 'none';
@@ -120,6 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
         addUserModal.style.display = 'none';
     });
 
+    // Close the audit log modal when the close button is clicked
+    closeAuditBtn.addEventListener('click', function() {
+        auditLogModal.style.display = 'none';
+    });
+
     // Close the popup modal when clicking outside of the modal content
     window.addEventListener('click', function(event) {
         if (event.target === popupModal) {
@@ -127,6 +168,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (event.target === addUserModal) {
             addUserModal.style.display = 'none';
+        }
+        if (event.target === auditLogModal) {
+            auditLogModal.style.display = 'none';
         }
     });
 
