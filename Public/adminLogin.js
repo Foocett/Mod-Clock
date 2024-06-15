@@ -1,12 +1,17 @@
-
-const socket = io();
 document.addEventListener('DOMContentLoaded', function() {
+    const socket = io();
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const configLoginButton = document.getElementById('configLoginButton');
 
-    document.getElementById('adminLoginForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form from refreshing the page
-        const adminPassword = document.getElementById('adminPassword').value;
+    configLoginButton.addEventListener('click', function() {
+        window.location.href = '/login';
+    });
 
-        socket.emit('validate-admin-password', { password: adminPassword }, (response) => {
+    adminLoginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const password = document.getElementById('adminPassword').value;
+
+        socket.emit('validate-admin-password', { password }, (response) => {
             if (response.valid) {
                 window.location.href = '/manage';
             } else {

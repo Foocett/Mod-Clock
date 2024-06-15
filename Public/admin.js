@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const openAddUserModalButton = document.getElementById('openAddUserModalButton');
     const viewAuditLogButton = document.getElementById('viewAuditLogButton');
     const auditLogList = document.getElementById('auditLogList');
+    const configLoginButton = document.getElementById('configLoginButton');
+
+    configLoginButton.addEventListener('click', function() {
+        window.location.href = '/login';
+    });
 
     function loadUsers() {
         console.log('Emitting get-users event');
