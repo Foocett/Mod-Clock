@@ -1,3 +1,6 @@
+// This is the main file which controls communication between all the different pages
+// If you don't know the difference between javascript and node.js, I would recommend reading the article provided in README.md, this background will make much of this file easier to digest
+
 const port = 3000; // Port that the webserver will be hosted on
 
 // Import the necessary modules
@@ -6,8 +9,6 @@ const express = require('express'); // Express is a web framework for node.js th
 const http = require('http'); // Builtin Node.js module for creating HTTP servers
 const { Server } = require('socket.io'); // Module for working with WebSockets, allowing communication between clients, here it is used to allow manual configuration of clock settings
 const path = require('path'); // Builtin Node.js module for working with file and directory paths
-const session = require('express-session'); // Express middleware for managing user sessions
-const sharedSession = require('express-socket.io-session'); // Middleware to share sessions between Express and Socket.IO
 
 const app = express(); // Create an instance of the Express application
 const server = http.createServer(app); // Create an HTTP server using the Express app
@@ -31,66 +32,6 @@ try {
 // In-memory storage for admin authentication
 let adminAuthenticated = false;
 
-// Set up session management for user login
-const sessionMiddleware = session({
-    secret: 'your_secret_key', // Replace with a strong secret key
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
-});
-
-app.use(sessionMiddleware); // Use the session middleware in Express
-io.use(sharedSession(sessionMiddleware, {
-    autoSave: true // Automatically save sessions after each request
-}));
-
-// Function to log user activity
-function logUserActivity(username, type) {
-    const logEntry = {
-        type,
-        username,
-        timestamp: new Date().toISOString()
-    };
-
-    fs.readFile('auditLog.json', (err, data) => {
-        let logData = [];
-        if (!err) {
-            try {
-                logData = JSON.parse(data);
-            } catch (parseErr) {
-                console.error('Error parsing audit log:', parseErr);
-            }
-        }
-        logData.push(logEntry);
-
-        fs.writeFile('auditLog.json', JSON.stringify(logData, null, 2), (writeErr) => {
-            if (writeErr) {
-                console.error('Error writing to audit log:', writeErr);
-            } else {
-                console.log('Audit log updated');
-            }
-        });
-    });
-}
-
-// Function to read the audit log
-function getAuditLog(callback) {
-    fs.readFile('auditLog.json', (err, data) => {
-        if (err) {
-            console.error('Error reading audit log:', err);
-            callback([]);
-            return;
-        }
-        try {
-            const logData = JSON.parse(data);
-            callback(logData);
-        } catch (parseErr) {
-            console.error('Error parsing audit log:', parseErr);
-            callback([]);
-        }
-    });
-}
-
 // This basically tells the server to read from the "Public" file folder as the root folder
 app.use(express.static(path.join(__dirname, 'Public')));
 
@@ -103,7 +44,7 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-// Middleware to check if an admin is authenticated, if they access /manage without authenticating they will be redirected to the admin login page
+// Middleware to check if an admin is authenticated, if they access /add without authenticating they will be redirected to the admin login page
 function isAdminAuthenticated(req, res, next) {
     if (adminAuthenticated) {
         next(); // Admin is authenticated, proceed to the next middleware
@@ -114,7 +55,7 @@ function isAdminAuthenticated(req, res, next) {
 
 // Serve the main clock page at the root URL
 app.get('/', (req, res) => {
-    res.redirect( '/clock');
+    res.redirect('/clock')
 });
 // Serve the main clock page at /clock URL
 app.get('/clock', (req, res) => {
@@ -134,13 +75,29 @@ app.get('/login', (req, res) => {
 });
 // Serve the admin login page
 app.get('/admin', (req, res) => {
-    adminAuthenticated = false; // Reset admin authentication
     res.sendFile(path.join(__dirname, 'Public', 'adminLogin.html'));
 });
-// Serve the admin manage page with admin authentication check at /manage URL
+// Serve the admin add page with admin authentication check at /add URL
 app.get('/manage', isAdminAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'Public', 'admin.html'));
 });
+
+// Function to log user activity
+function logUserActivity(username, type) {
+    const logEntry = {
+        username,
+        type,
+        timestamp: new Date().toISOString()
+    };
+    let auditLog;
+    try {
+        auditLog = JSON.parse(fs.readFileSync('auditLog.json', 'utf8'));
+    } catch (err) {
+        auditLog = [];
+    }
+    auditLog.push(logEntry);
+    fs.writeFileSync('auditLog.json', JSON.stringify(auditLog, null, 2));
+}
 
 // Listen for a connection event from a client
 io.on('connection', (socket) => {
@@ -156,7 +113,20 @@ io.on('connection', (socket) => {
     // Handle get-audit-log event
     socket.on('get-audit-log', (callback) => {
         console.log('get-audit-log event received');
-        getAuditLog(callback);
+        fs.readFile('auditLog.json', (err, data) => {
+            if (err) {
+                console.error('Error reading audit log:', err);
+                callback([]);
+                return;
+            }
+            try {
+                const logData = JSON.parse(data);
+                callback(logData);
+            } catch (parseErr) {
+                console.error('Error parsing audit log:', parseErr);
+                callback([]);
+            }
+        });
     });
 
     // Handle admin password validation
@@ -185,7 +155,7 @@ io.on('connection', (socket) => {
         const user = userData.find(user => user.username === username && user.password === password);
 
         if (user) {
-            // Log user activity
+            // Log user activity with type "User Login"
             logUserActivity(username, 'User Login');
 
             // Save the session upon successful authentication
@@ -218,6 +188,24 @@ io.on('connection', (socket) => {
                 callback(true); // New login added successfully
             }
         });
+    });
+
+    // Handle removing a user
+    socket.on('remove-user', (username, callback) => {
+        const index = userData.findIndex(user => user.username === username);
+        if (index !== -1) {
+            userData.splice(index, 1); // Remove user from userData array
+            fs.writeFile('userdata.json', JSON.stringify(userData, null, 2), (err) => {
+                if (err) {
+                    console.error('Error writing to userdata.json:', err);
+                    callback(false);
+                } else {
+                    callback(true); // User removed successfully
+                }
+            });
+        } else {
+            callback(false); // User not found
+        }
     });
 
     // Handle disconnection event
