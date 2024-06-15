@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--suppress HtmlUnknownTarget -->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Manage Users</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="socket.io/socket.io.js"></script>
+        <script src="admin.js"></script>
+        <link rel="stylesheet" href="admin.css">
+    </head>
+    <body>
+        <div class="container">
+            <h2>Manage Users</h2>
+            <button id="openAddUserModalButton">Add New User</button>
+
+            <div class="user-box">
+                <ul id="userList"></ul>
+            </div>
+        </div>
+
+        <!-- Popup modal for displaying username and password -->
+        <div id="popupModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>User Details</h3>
+                <p id="popupUsername"></p>
+                <p id="popupPassword"></p>
+            </div>
+        </div>
+
+        <!-- Popup modal for adding a new user -->
+        <div id="addUserModal" class="modal">
+            <div class="modal-content">
+                <span class="close-add">&times;</span>
+                <h3>Add New User</h3>
+                <form id="addUserForm">
+                    <input type="text" id="newUsername" placeholder="New Username" required>
+                    <input type="password" id="newPassword" placeholder="New Password" required>
+                    <button type="submit">Add User</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
