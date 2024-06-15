@@ -1,6 +1,13 @@
-const socket = io();
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
+document.addEventListener('DOMContentLoaded', function() {
+    const socket = io();
+    const loginForm = document.getElementById('loginForm');
+    const adminLoginButton = document.getElementById('adminLoginButton');
+
+    adminLoginButton.addEventListener('click', function() {
+        window.location.href = '/admin';
+    });
+
+    loginForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
@@ -9,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response) {
                 window.location.href = '/config';
             } else {
-                alert('Login failed');
+                alert('Invalid credentials');
             }
         });
     });
-})
+});
