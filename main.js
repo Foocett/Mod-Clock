@@ -67,7 +67,7 @@ function isAdminAuthenticated(req, res, next) {
 
 // Serve the main clock page at the root URL
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Public', 'clock.html'));
+    res.redirect( '/clock');
 });
 // Serve the main clock page at /clock URL
 app.get('/clock', (req, res) => {
