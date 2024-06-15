@@ -12,15 +12,18 @@
     <body>
         <div class="container">
             <h2>Manage Users</h2>
-            <button id="openAddUserModalButton">Add User</button>
-            <button id="viewAuditLogButton">View Audit Log</button>
-            <div class="user-box" id="userList"></div>
+            <button id="openAddUserModalButton" class="blue-gradient-hover">Add User</button>
+            <button id="viewAuditLogButton" class="blue-gradient-hover">View Audit Log</button>
+            <div class="user-box">
+                <ul id="userList"></ul>
+            </div>
+            <button id="configLoginButton" class="bottom-left-button blue-gradient-hover">Configuration Login</button>
         </div>
 
         <div id="popupModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <p id="popupUsername"></p>
+                <h3 id="popupUsername"></h3>
                 <p id="popupPassword"></p>
             </div>
         </div>
@@ -28,10 +31,11 @@
         <div id="addUserModal" class="modal">
             <div class="modal-content">
                 <span class="close-add">&times;</span>
+                <h3>Add User</h3>
                 <form id="addUserForm">
                     <input type="text" id="newUsername" placeholder="Username" required>
                     <input type="password" id="newPassword" placeholder="Password" required>
-                    <button type="submit">Add User</button>
+                    <button type="submit" class="blue-gradient-hover">Add</button>
                 </form>
             </div>
         </div>
@@ -39,9 +43,10 @@
         <div id="auditLogModal" class="modal">
             <div class="modal-content">
                 <span class="close-audit">&times;</span>
-                <div class="audit-log-box" id="auditLogList"></div>
+                <h3>Audit Log</h3>
+                <div id="auditLogList" class="audit-log-box"></div>
             </div>
         </div>
-        <button id="configLoginButton" class="bottom-left-button">Configuration Login</button>
+
     </body>
 </html>

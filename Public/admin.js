@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const buttonContainer = document.createElement('div');
 
                 const showPasswordButton = document.createElement('button');
+                showPasswordButton.classList.add('blue-gradient-hover');
                 showPasswordButton.textContent = 'Show Password';
                 showPasswordButton.addEventListener('click', () => {
                     popupUsername.textContent = `Username: ${user.username}`;
@@ -38,43 +39,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 const changePasswordButton = document.createElement('button');
+                changePasswordButton.classList.add('blue-gradient-hover');
                 changePasswordButton.textContent = 'Change Password';
                 changePasswordButton.addEventListener('click', () => {
-                    const newPassword = prompt('Enter new password:');
-                    if (newPassword) {
-                        socket.emit('change-password', { username: user.username, password: newPassword }, (response) => {
-                            if (response) {
-                                alert('Password changed successfully');
-                                loadUsers();
-                            } else {
-                                alert('Failed to change password');
-                            }
-                        });
-                    }
+                    createInputModal('Enter new password:', (newPassword) => {
+                        if (newPassword) {
+                            socket.emit('change-password', { username: user.username, password: newPassword }, (response) => {
+                                if (response) {
+                                    alert('Password changed successfully');
+                                    loadUsers();
+                                } else {
+                                    alert('Failed to change password');
+                                }
+                            });
+                        }
+                    });
                 });
 
                 const changeUsernameButton = document.createElement('button');
+                changeUsernameButton.classList.add('blue-gradient-hover');
                 changeUsernameButton.textContent = 'Change Username';
                 changeUsernameButton.addEventListener('click', () => {
-                    const newUsername = prompt('Enter new username:');
-                    if (newUsername) {
-                        socket.emit('change-username', { oldUsername: user.username, newUsername: newUsername }, (response) => {
-                            if (response) {
-                                alert('Username changed successfully');
-                                loadUsers();
-                            } else {
-                                alert('Failed to change username');
-                            }
-                        });
-                    }
+                    createInputModal('Enter new username:', (newUsername) => {
+                        if (newUsername) {
+                            socket.emit('change-username', { oldUsername: user.username, newUsername: newUsername }, (response) => {
+                                if (response) {
+                                    alert('Username changed successfully');
+                                    loadUsers();
+                                } else {
+                                    alert('Failed to change username');
+                                }
+                            });
+                        }
+                    });
                 });
 
                 const removeButton = document.createElement('button');
+                removeButton.classList.add('remove-button', 'red-gradient-hover');
                 removeButton.textContent = 'Remove User';
-                removeButton.classList.add('remove-button');
                 removeButton.addEventListener('click', () => {
-                    const confirmRemoval = confirm(`Are you sure you want to remove user ${user.username}?`);
-                    if (confirmRemoval) {
+                    createConfirmationModal(`Are you sure you want to remove user ${user.username}?`, () => {
                         socket.emit('remove-user', user.username, (response) => {
                             if (response) {
                                 alert('User removed successfully');
@@ -83,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 alert('Failed to remove user');
                             }
                         });
-                    }
+                    });
                 });
 
                 buttonContainer.appendChild(showPasswordButton);
@@ -132,7 +136,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response) {
                 alert('User added successfully');
                 document.getElementById('addUserForm').reset();
-                addUserModal.style.display = 'none';
+                addUserModal.classList.add('slide-out');
+                setTimeout(() => {
+                    addUserModal.style.display = 'none';
+                    addUserModal.classList.remove('slide-out');
+                }, 300);
                 loadUsers();
             } else {
                 alert('Failed to add user');
@@ -153,29 +161,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close the popup modal when the close button is clicked
     closeBtn.addEventListener('click', function() {
-        popupModal.style.display = 'none';
+        popupModal.classList.add('slide-out');
+        setTimeout(() => {
+            popupModal.style.display = 'none';
+            popupModal.classList.remove('slide-out');
+        }, 300);
     });
 
     // Close the add user modal when the close button is clicked
     closeAddBtn.addEventListener('click', function() {
-        addUserModal.style.display = 'none';
+        addUserModal.classList.add('slide-out');
+        setTimeout(() => {
+            addUserModal.style.display = 'none';
+            addUserModal.classList.remove('slide-out');
+        }, 300);
     });
 
     // Close the audit log modal when the close button is clicked
     closeAuditBtn.addEventListener('click', function() {
-        auditLogModal.style.display = 'none';
+        auditLogModal.classList.add('slide-out');
+        setTimeout(() => {
+            auditLogModal.style.display = 'none';
+            auditLogModal.classList.remove('slide-out');
+        }, 300);
     });
 
     // Close the popup modal when clicking outside of the modal content
     window.addEventListener('click', function(event) {
         if (event.target === popupModal) {
-            popupModal.style.display = 'none';
+            popupModal.classList.add('slide-out');
+            setTimeout(() => {
+                popupModal.style.display = 'none';
+                popupModal.classList.remove('slide-out');
+            }, 300);
         }
         if (event.target === addUserModal) {
-            addUserModal.style.display = 'none';
+            addUserModal.classList.add('slide-out');
+            setTimeout(() => {
+                addUserModal.style.display = 'none';
+                addUserModal.classList.remove('slide-out');
+            }, 300);
         }
         if (event.target === auditLogModal) {
-            auditLogModal.style.display = 'none';
+            auditLogModal.classList.add('slide-out');
+            setTimeout(() => {
+                auditLogModal.style.display = 'none';
+                auditLogModal.classList.remove('slide-out');
+            }, 300);
         }
     });
 
@@ -183,16 +215,142 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             if (popupModal.style.display === 'block') {
-                popupModal.style.display = 'none';
+                popupModal.classList.add('slide-out');
+                setTimeout(() => {
+                    popupModal.style.display = 'none';
+                    popupModal.classList.remove('slide-out');
+                }, 300);
             }
             if (addUserModal.style.display === 'block') {
-                addUserModal.style.display = 'none';
+                addUserModal.classList.add('slide-out');
+                setTimeout(() => {
+                    addUserModal.style.display = 'none';
+                    addUserModal.classList.remove('slide-out');
+                }, 300);
             }
             if (auditLogModal.style.display === 'block') {
-                auditLogModal.style.display = 'none';
+                auditLogModal.classList.add('slide-out');
+                setTimeout(() => {
+                    auditLogModal.style.display = 'none';
+                    auditLogModal.classList.remove('slide-out');
+                }, 300);
             }
         }
     });
+
+    function createInputModal(promptText, callback) {
+        const modal = document.createElement('div');
+        modal.classList.add('modal');
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-input">&times;</span>
+                <p>${promptText}</p>
+                <input type="text" id="inputModalValue" required>
+                <button id="inputModalSubmit" class="blue-gradient-hover">Submit</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const closeInput = modal.querySelector('.close-input');
+        const inputModalSubmit = modal.querySelector('#inputModalSubmit');
+        const inputModalValue = modal.querySelector('#inputModalValue');
+
+        modal.style.display = 'block';
+
+        closeInput.addEventListener('click', () => {
+            modal.classList.add('slide-out');
+            setTimeout(() => {
+                modal.remove();
+            }, 300);
+        });
+
+        inputModalSubmit.addEventListener('click', () => {
+            const value = inputModalValue.value;
+            modal.classList.add('slide-out');
+            setTimeout(() => {
+                modal.remove();
+                callback(value);
+            }, 300);
+        });
+
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                modal.classList.add('slide-out');
+                setTimeout(() => {
+                    modal.remove();
+                }, 300);
+            }
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.classList.add('slide-out');
+                setTimeout(() => {
+                    modal.remove();
+                }, 300);
+            }
+        });
+    }
+
+    function createConfirmationModal(message, callback) {
+        const modal = document.createElement('div');
+        modal.classList.add('modal');
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-confirmation">&times;</span>
+                <p>${message}</p>
+                <button id="confirmationYes" class="red-gradient-hover">Yes</button>
+                <button id="confirmationNo" class="blue-gradient-hover">No</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const closeConfirmation = modal.querySelector('.close-confirmation');
+        const confirmationYes = modal.querySelector('#confirmationYes');
+        const confirmationNo = modal.querySelector('#confirmationNo');
+
+        modal.style.display = 'block';
+
+        closeConfirmation.addEventListener('click', () => {
+            modal.classList.add('slide-out');
+            setTimeout(() => {
+                modal.remove();
+            }, 300);
+        });
+
+        confirmationYes.addEventListener('click', () => {
+            modal.classList.add('slide-out');
+            setTimeout(() => {
+                modal.remove();
+                callback();
+            }, 300);
+        });
+
+        confirmationNo.addEventListener('click', () => {
+            modal.classList.add('slide-out');
+            setTimeout(() => {
+                modal.remove();
+            }, 300);
+        });
+
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                modal.classList.add('slide-out');
+                setTimeout(() => {
+                    modal.remove();
+                }, 300);
+            }
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.classList.add('slide-out');
+                setTimeout(() => {
+                    modal.remove();
+                }, 300);
+            }
+        });
+    }
 
     loadUsers();
 });

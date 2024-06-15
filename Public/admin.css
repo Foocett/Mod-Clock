@@ -29,40 +29,69 @@ h2 {
 button {
     padding: 10px 20px;
     border: none;
-    background-color: #1e88e5;
     color: #ffffff;
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 20px;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
     font-size: 16px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
-button:hover {
-    background-color: #1565c0;
-    transform: scale(1.05);
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease-out, height 0.4s ease-out;
 }
 
-.bottom-left-button {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    padding: 10px 20px;
-    background-color: #1e88e5;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, transform 0.3s;
+button:active::before {
+    width: 300%;
+    height: 300%;
 }
 
-.bottom-left-button:hover {
-    background-color: #1565c0;
-    transform: scale(1.05);
+button.blue-gradient-hover {
+    background: linear-gradient(145deg, #1e88e5, #1565c0, #1e88e5);
+    background-size: 400% 400%;
+    transition: background 0.3s ease;
 }
+
+button.blue-gradient-hover:hover {
+    background-position: 0% 50%;
+    animation: gradient-blue 3s ease infinite;
+}
+
+button.red-gradient-hover {
+    background: linear-gradient(145deg, #d32f2f, #b71c1c, #d32f2f);
+    background-size: 400% 400%;
+    transition: background 0.3s ease;
+}
+
+button.red-gradient-hover:hover {
+    background-position: 0% 50%;
+    animation: gradient-red 3s ease infinite;
+}
+
+@keyframes gradient-blue {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-red {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 
 .user-box, .audit-log-box {
     background-color: #1e1e1e;
@@ -128,7 +157,7 @@ li button.remove-button:hover {
     background-color: #b71c1c;
 }
 
-#popupModal, #addUserModal, #auditLogModal {
+#popupModal, #addUserModal, #auditLogModal, .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -157,7 +186,11 @@ li button.remove-button:hover {
     background: linear-gradient(145deg, #292929, #2e2e2e);
 }
 
-.audit-log-entry {
+.modal-content.slide-out {
+    animation: slideOut 0.3s;
+}
+
+.audit-log-entry, .modal-box {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -174,12 +207,12 @@ li button.remove-button:hover {
     font-size: 16px;
 }
 
-.audit-log-entry p {
+.audit-log-entry p, .modal-box p {
     margin: 0;
     font-size: 14px;
 }
 
-.close, .close-add, .close-audit {
+.close, .close-add, .close-audit, .close-input, .close-confirmation {
     color: #aaaaaa;
     float: right;
     font-size: 28px;
@@ -191,7 +224,11 @@ li button.remove-button:hover {
 .close-add:hover,
 .close-add:focus,
 .close-audit:hover,
-.close-audit:focus {
+.close-audit:focus,
+.close-input:hover,
+.close-input:focus,
+.close-confirmation:hover,
+.close-confirmation:focus {
     color: #ffffff;
     text-decoration: none;
     cursor: pointer;
@@ -213,6 +250,26 @@ input:focus {
     outline: none;
 }
 
+.bottom-left-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: #1e88e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.bottom-left-button:hover {
+    background-color: #1565c0;
+    transform: scale(1.05);
+}
+
 /* Animations */
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -224,3 +281,13 @@ input:focus {
     to { transform: translateY(0); opacity: 1; }
 }
 
+@keyframes slideOut {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50px); }
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
