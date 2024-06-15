@@ -1,4 +1,6 @@
-//const socket = io();
+//TODO Letter Day Cookie
+
+const socket = io();
 const letterDays = ["A", "B", "C", "D", "E", "F"]; //Used to make day progression easier
 let letterDayIndex = 0 //Keeps track of letter days array
 let previousDay = new Date().getDate(); // Used to track day changes to progress letter day
