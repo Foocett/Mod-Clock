@@ -104,6 +104,11 @@ button.red-gradient-hover:hover {
     background: #1e1e1e linear-gradient(145deg, #1c1c1c, #202020);
 }
 
+.audit-log-box {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
 ul {
     list-style-type: none;
     padding: 0;
