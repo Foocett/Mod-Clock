@@ -9,6 +9,8 @@ const express = require('express'); // Express is a web framework for node.js th
 const http = require('http'); // Builtin Node.js module for creating HTTP servers
 const { Server } = require('socket.io'); // Module for working with WebSockets, allowing communication between clients, here it is used to allow manual configuration of clock settings
 const path = require('path'); // Builtin Node.js module for working with file and directory paths
+const session = require('express-session'); // Express middleware for managing user sessions
+const sharedSession = require('express-socket.io-session'); // Middleware to share sessions between Express and Socket.IO
 
 const app = express(); // Create an instance of the Express application
 const server = http.createServer(app); // Create an HTTP server using the Express app
@@ -31,6 +33,21 @@ try {
 
 // In-memory storage for admin authentication
 let adminAuthenticated = false;
+
+// Set up session management
+const sessionMiddleware = session({
+    secret: 'your_secret_key', // Replace with a strong secret key
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if using HTTPS
+});
+
+app.use(sessionMiddleware);
+
+// Share session with Socket.IO
+io.use(sharedSession(sessionMiddleware, {
+    autoSave: true
+}));
 
 // This basically tells the server to read from the "Public" file folder as the root folder
 app.use(express.static(path.join(__dirname, 'Public')));
@@ -55,7 +72,7 @@ function isAdminAuthenticated(req, res, next) {
 
 // Serve the main clock page at the root URL
 app.get('/', (req, res) => {
-    res.redirect('/clock')
+    res.redirect('/clock');
 });
 // Serve the main clock page at /clock URL
 app.get('/clock', (req, res) => {
@@ -77,7 +94,7 @@ app.get('/login', (req, res) => {
 app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'Public', 'adminLogin.html'));
 });
-// Serve the admin add page with admin authentication check at /add URL
+// Serve the admin add page with admin authentication check at /manage URL
 app.get('/manage', isAdminAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'Public', 'admin.html'));
 });
