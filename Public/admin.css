@@ -17,38 +17,60 @@ body {
     height: 12px; /* Height of the scrollbar (for horizontal scrollbar) */
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-    background: #2c2c2c; /* Background of the scrollbar track */
-    border-radius: 10px; /* Rounded corners for the track */
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
+    background: transparent; /* Hide the track */
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888; /* Color of the scrollbar handle */
+    background: #444; /* Color of the scrollbar handle */
     border-radius: 10px; /* Rounded corners for the handle */
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); /* Inner shadow for depth */
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555; /* Color of the scrollbar handle when hovered */
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5); /* Deeper shadow for depth on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #333; /* Darker color when active */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7); /* Even deeper shadow when active */
+    transform: scale(1.2); /* Enlarge further on click */
 }
 
 /* Custom scrollbar for Firefox */
 * {
     scrollbar-width: thin; /* Thin scrollbar */
-    scrollbar-color: #888 #2c2c2c; /* Scrollbar handle and track colors */
+    scrollbar-color: #444 transparent; /* Scrollbar handle color and transparent track */
+}
+
+/* Firefox scrollbar thumb */
+*::-webkit-scrollbar-thumb {
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar handle when hovered */
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5); /* Deeper shadow for depth on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background: #333; /* Darker color when active */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7); /* Even deeper shadow when active */
+    transform: scale(1.2); /* Enlarge further on click */
 }
 
 /* Custom scrollbar for IE and Edge */
 body {
-    -ms-overflow-style: -ms-autohiding-scrollbar; /* Autohiding scrollbar */
+    -ms-overflow-style: none; /* Hide the scrollbar track */
 }
 
 /* Style for the user list container */
 .user-box {
+    background-color: #1e1e1e;
     border-radius: 10px;
     border: 1px solid #333333;
     width: 500px;
@@ -56,8 +78,9 @@ body {
     overflow-y: auto;
     padding: 20px;
     box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.5);
-    background: #1e1e1e linear-gradient(145deg, #1c1c1c, #202020);
+    background: linear-gradient(145deg, #1c1c1c, #202020);
 }
+
 
 
 .container {
