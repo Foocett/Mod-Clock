@@ -1,54 +1,6 @@
 [
   {
-    "username": "user4",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user1",
-    "password": "1234"
-  },
-  {
-    "username": "user10",
-    "password": "1234"
+    "username": "admin",
+    "password": "admin"
   }
 ]
