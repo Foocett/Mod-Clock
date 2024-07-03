@@ -1,16 +1,47 @@
 <!DOCTYPE html>
-<!--suppress HtmlUnknownTarget -->
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Modular Clock Configuration</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="socket.io/socket.io.js"></script>
-        <script src="config.js"></script>
-        <link rel="stylesheet" href="config.css">
-    </head>
-    <body>
-        <h1>Welcome to the Config Page</h1>
-        <p>If you see this, you have been authenticated.</p>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Page</title>
+    <link rel="stylesheet" href="admin.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Configuration Page</h2>
+        <form id="timeForm">
+            <div>
+                <label for="day">Day Type:</label>
+                <select id="day" name="day">
+                    <option value="normal">Normal</option>
+                    <option value="wednesday">Wednesday</option>
+                </select>
+            </div>
+            <div id="timeSlotsContainer">
+                <div class="time-slot">
+                    <label for="start-0">Start Time:</label>
+                    <input type="time" id="start-0" name="start-0" required>
+                    <label for="end-0">End Time:</label>
+                    <input type="time" id="end-0" name="end-0" required>
+                </div>
+            </div>
+            <button type="button" id="addTimeSlot">Add Time Slot</button>
+            <button type="submit">Save</button>
+        </form>
+        <form id="letterDayForm">
+            <label for="letterDay">Letter Day:</label>
+            <select id="letterDay" name="letterDay">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+            </select>
+            <button type="submit">Set Letter Day</button>
+        </form>
+    </div>
+</body>
 </html>
