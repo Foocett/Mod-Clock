@@ -9,12 +9,19 @@ function updateLetterDay() {
 function writeLetterDay(day) {
     socket.emit("write-letter-day", (day))
 }
+function writeTheme(theme){
+    socket.emit("write-theme", (theme))
+}
 
 document.addEventListener("DOMContentLoaded", function() {
-    const submitButton = document.getElementById("submit-button");
-    submitButton.addEventListener('click', (e) => {
+    document.getElementById("letterDay").addEventListener('change', (e) => {
         e.preventDefault();
         writeLetterDay(document.getElementById('letterDay').value);
+    });
+
+    document.getElementById('theme-dropdown').addEventListener('change', (e) => {
+        e.preventDefault();
+        writeTheme(document.getElementById('theme-dropdown').value);
     });
 
     socket.on('connect', () => {
@@ -24,4 +31,19 @@ document.addEventListener("DOMContentLoaded", function() {
     socket.on('disconnect', () => {
         console.log('Disconnected from server');
     });
+
+    let themeDropdown = document.getElementById("theme-dropdown");
+    function populateThemeDropdown() {
+        fetch('themes.json')
+            .then(response => response.json())
+            .then(themes => {
+                for (let key in themes) {
+                    const newOption = document.createElement("option");
+                    newOption.innerHTML = key;
+                    newOption.value = themes[key];
+                    themeDropdown.appendChild(newOption);
+                }
+            });
+    }
+    populateThemeDropdown();
 });
