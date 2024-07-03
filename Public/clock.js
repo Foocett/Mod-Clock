@@ -56,8 +56,12 @@ function writeLetterDay(day) {
 }
 document.addEventListener("DOMContentLoaded", function() { //execute code after all the page content is loaded
     socket.on('update-letter-day', (val) => {
-        document.getElementById("letter-text").textContent = val + "-Day";
+        document.getElementById("letter-text").textContent = letterDays[val] + "-Day";
     });
+
+    socket.on('update-theme', (theme) => {
+        document.documentElement.style.setProperty("--background", theme);
+    })
 
     function startTime() { //Starts loop, functions as all-encompassing init function
         const today = new Date(); //creates a new time object
