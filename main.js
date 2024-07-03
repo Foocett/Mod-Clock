@@ -15,7 +15,7 @@ const sharedSession = require('express-socket.io-session'); // Middleware to sha
 const app = express(); // Create an instance of the Express application
 const server = http.createServer(app); // Create an HTTP server using the Express app
 const io = new Server(server); // Create a new instance of Socket.IO and attach it to the HTTP server
-
+let clockData = require('./clockData.json');
 // Middleware to parse JSON bodies
 app.use(express.json());
 
@@ -119,6 +119,23 @@ function logUserActivity(username, type) {
 // Listen for a connection event from a client
 io.on('connection', (socket) => {
     console.log('A user connected');
+
+    socket.on('get-letter-day', (callback) => {
+        callback(clockData["letter-day-index"]);
+    })
+
+    socket.on("write-letter-day", (value) => {
+        console.log("sdlfksdf")
+        clockData["letter-day-index"] = value;
+        updateClockInfo()
+        io.emit('update-letter-day', value);
+    })
+
+    function updateClockInfo() {
+        fs.writeFile("./clockData.json", JSON.stringify(clockData), function writeJSON(err) {
+            if (err) return console.log(err);
+        });
+    }
 
     // Handle get-users event
     socket.on('get-users', (callback) => {

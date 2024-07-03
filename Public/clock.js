@@ -2,7 +2,7 @@
 
 const socket = io();
 const letterDays = ["A", "B", "C", "D", "E", "F"]; //Used to make day progression easier
-let letterDayIndex = 0 //Keeps track of letter days array
+let letterDayIndex = 0; //Keeps track of letter days array
 let previousDay = new Date().getDate(); // Used to track day changes to progress letter day
 const modTimes = [ //start and end times for normal day
     { start: '08:25:00', end: '08:44:59' },
@@ -45,9 +45,20 @@ const wedModTimes = [ //start and end times for wednesday
     { start: '14:50', end: '15:09:59' }
 ];
 
+function updateLetterDay() {
+    socket.emit("get-letter-day", (callback) => {
+        letterDayIndex = callback;
+        document.getElementById("letter-text").textContent = letterDays[letterDayIndex] + "-Day";
+    })
+}
+function writeLetterDay(day) {
+    socket.emit("write-letter-day", (day))
+}
+document.addEventListener("DOMContentLoaded", function() { //execute code after all the page content is loaded
+    socket.on('update-letter-day', (val) => {
+        document.getElementById("letter-text").textContent = val + "-Day";
+    });
 
-
-document.addEventListener("DOMContentLoaded", function() { //execute code after all of page content is loaded
     function startTime() { //Starts loop, functions as all-encompassing init function
         const today = new Date(); //creates a new time object
         let h = today.getHours();
@@ -61,11 +72,9 @@ document.addEventListener("DOMContentLoaded", function() { //execute code after 
         h = h ? h : 12; // changes '0' o'clock to 12 o'clock (this works because javascript can interpret the number 0 as a false boolean since it is dynamically typed), writing an expression in this format is called a ternary operator
         // A ternary operator can be read as {condition ? resultIfTrue : resultIfFalse}
 
-        console.log(h)
-        console.log(ampm)
         m = checkTime(m); //format minutes value
         s = checkTime(s); //format seconds value
-
+        updateLetterDay()
         document.getElementById("live-time").textContent = h + ":" + m + ":" + s + " " + ampm; //set timer text value
         document.getElementById("mod-text").textContent = "Mod " + getTimeSlot(); //set mod number text value
         setProgress(getElapsedTimePercentage()); //update progress bar position
@@ -87,9 +96,14 @@ document.addEventListener("DOMContentLoaded", function() { //execute code after 
         return today.getDay() === 3; // 3 corresponds to Wednesday
     }
 
+    function isWeekend() {
+        const today = new Date();
+        return today.getDay() === 6 || today.getDay() === 7; //6 and 7 correspond to Saturday and Sunday
+    }
+
     function getTimeInSeconds(timeString) {
         const [hours, minutes, seconds] = timeString.split(':').map(Number);
-        /* There's a lot going in this line so here's a breakdown
+        /* There's a lot of stuff going in this line so here's a breakdown
         *  const [hours, minutes, seconds] - this syntax allows us to quickly break down an array into numerous variables
         * .split(':') - this function splits the time string which will be formatted as hh:mm:ss into an array of substrings separated by :'s, resulting in [hh,mm,ss]
         * .map(Number) - the map function applies something to each element of an array, in this case, applying the "Number" function, converting the strings from the split function into numbers so ["12", "34", "56"] becomes [12, 34, 56].
@@ -102,12 +116,16 @@ document.addEventListener("DOMContentLoaded", function() { //execute code after 
     }
 
     function nextLetterDay() {
-        if(letterDayIndex === 5) { //if index is five, wrap back to zero, else increase by one
-            letterDayIndex = 0;
-        } else {
-            letterDayIndex++;
+        if(!isWeekend()) {
+            if (letterDayIndex === 5) { //if index is five, wrap back to zero, else increase by one
+                letterDayIndex = 0;
+                writeLetterDay(letterDayIndex)
+            } else {
+                letterDayIndex++;
+                writeLetterDay(letterDayIndex)
+            }
+            updateLetterDay();
         }
-        document.getElementById("letter-text").textContent = letterDays[letterDayIndex] + "-Day" ; //update letter day DOM element
     }
 
     function getTimeSlot() {
