@@ -125,12 +125,15 @@ io.on('connection', (socket) => {
     })
 
     socket.on("write-letter-day", (value) => {
-        console.log("sdlfksdf")
         clockData["letter-day-index"] = value;
         updateClockInfo()
         io.emit('update-letter-day', value);
     })
 
+    socket.on('write-theme', (theme) => {
+        console.log(theme)
+        io.emit('update-theme', (theme));
+    })
     function updateClockInfo() {
         fs.writeFile("./clockData.json", JSON.stringify(clockData), function writeJSON(err) {
             if (err) return console.log(err);
