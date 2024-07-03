@@ -20,7 +20,7 @@ let clockData = require('./clockData.json');
 app.use(express.json());
 
 // Read config data from JSON file
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+const config = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
 // Read user data from JSON file
 let userData;
 try {
