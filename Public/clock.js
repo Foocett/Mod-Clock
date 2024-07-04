@@ -1,4 +1,4 @@
-//TODO Letter Day Cookie
+//TODO Store letter day on server
 
 const socket = io();
 const letterDays = ["A", "B", "C", "D", "E", "F"]; //Used to make day progression easier
@@ -54,12 +54,15 @@ document.addEventListener("DOMContentLoaded", function() { //execute code after 
         let m = today.getMinutes();
         let s = today.getSeconds();
 
+        let ampm = " " + (h >= 12 ? 'PM' : 'AM'); //Get AM/PM Value, this notation is called a ternary operator saying that if h>=12, return PM else return AM, there is a more advanced usage of this notation in a few lines
 
-        h = h % 12; //Converts from 24hr time to 12hr
-        h = h ? h : 12; // changes 0 o'clock to 12 o'clock (this works because javascript can interpret the number 0 as a false boolean), writing an expression in this format is called a ternary operator
+        h %= 12; //Converts from 24hr time to 12hr, in other terms, h  is equal to the remainder of h divided by 12 (remember that the %= is a shorthand for
+
+        h = h ? h : 12; // changes '0' o'clock to 12 o'clock (this works because javascript can interpret the number 0 as a false boolean since it is dynamically typed), writing an expression in this format is called a ternary operator
         // A ternary operator can be read as {condition ? resultIfTrue : resultIfFalse}
 
-        let ampm = " " + (h >= 12 ? 'PM' : 'AM'); //Get AM/PM Value, this is another instance of the ternary operator, this case makes a bit more sense, if h>=12, return PM else return AM
+        console.log(h)
+        console.log(ampm)
         m = checkTime(m); //format minutes value
         s = checkTime(s); //format seconds value
 
