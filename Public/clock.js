@@ -55,6 +55,12 @@ function writeLetterDay(day) {
     socket.emit("write-letter-day", (day))
 }
 document.addEventListener("DOMContentLoaded", function() { //execute code after all the page content is loaded
+    document.addEventListener('keydown', function(e) {
+        if (e.repeat) return; // Prevent multiple triggers on long press
+        const bodyStyle = document.body.style;
+        bodyStyle.cursor = bodyStyle.cursor === 'none' ? 'unset' : 'none';
+    });
+
     socket.on('update-letter-day', (val) => {
         document.getElementById("letter-text").textContent = letterDays[val] + "-Day";
     });
