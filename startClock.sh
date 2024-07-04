@@ -1,9 +1,9 @@
 #!/bin/bash
 #line one is called a shebang or hashbang
-#it's a common thing in shell scripts that allows for easier use
+#it's super common in shell scripts and allows for easier use in a lot of ways
 #see readme file for more information
 
-#rlly only here for debugging
+#for debugging
 echo 0
 
 #navigate to git repository on raspberry pi
