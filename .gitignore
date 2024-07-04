@@ -127,3 +127,8 @@ dist
 
 .idea
 .idea/material_theme_project_new.xml
+
+userdata.json
+settings.json
+clockData.json
+auditLog.json
