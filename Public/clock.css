@@ -8,6 +8,7 @@ html {
 }
 
 body {
+    cursor: none;
     display: grid;
     width: 3840px;
     height: 1100px;
