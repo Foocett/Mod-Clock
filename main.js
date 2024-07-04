@@ -216,7 +216,7 @@ io.on('connection', (socket) => {
 
     // Handle adding a new login
     socket.on('add-login', (newLogin, callback) => {
-        if (userData.find(user => user.username === newLogin.username)) {
+        if (userData.find(user => user.username.toLowerCase() === newLogin.username.toLowerCase())) {
             callback(false); // Username already exists
             return;
         }

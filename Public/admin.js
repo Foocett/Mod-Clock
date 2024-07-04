@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('addUserForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent form from refreshing the page
-        const newUsername = document.getElementById('newUsername').value;
+        const newUsername = document.getElementById('newUsername').value.toLowerCase();
         const newPassword = document.getElementById('newPassword').value;
 
         console.log('Emitting add-login event');
