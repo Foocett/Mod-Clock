@@ -19,6 +19,9 @@ let clockData = require('./clockData.json');
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+const SimpleCrypto = require("simple-crypto-js").default
+let crypto = new SimpleCrypto("javascript-is-mid")
+
 // Read config data from JSON file
 const config = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
 // Read user data from JSON file
@@ -144,7 +147,8 @@ io.on('connection', (socket) => {
     socket.on('get-users', (callback) => {
         console.log('get-users event received');
         console.log('Sending user data:', userData);
-        callback(userData);
+        let encrypted = crypto.encrypt(userData);
+        callback(encrypted);
     });
 
     // Handle get-audit-log event

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewAuditLogButton = document.getElementById('viewAuditLogButton');
     const auditLogList = document.getElementById('auditLogList');
     const configLoginButton = document.getElementById('configLoginButton');
+    const crypto = new SimpleCrypto("javascript-is-mid")
 
     configLoginButton.addEventListener('click', function() {
         window.location.href = '/login';
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadUsers() {
         console.log('Emitting get-users event');
         socket.emit('get-users', (users) => {
+            users = crypto.decrypt(users)
             console.log('Received user data:', users);
             userList.innerHTML = '';
             users.forEach((user) => {
