@@ -9,8 +9,12 @@ echo 0
 #navigate to git repository on raspberry pi
 cd /home/clocc/Mod-Clock
 
-#get the latest update from
+#save local changes (this is to maintain content in json files)
+#pull latest version from git
+#apply the saved data from earlier
+git stash
 git pull
+git stash apply
 
 #update any libraries in package.json
 npm install
