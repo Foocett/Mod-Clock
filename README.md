@@ -9,8 +9,20 @@ This project was created by Andrew Fawcett on behalf of the Holland Hall class o
 # Table of Contents
 - [Overview](#Overview)
 - [Software](#Software)
+  - [Server Side Javascript](#server-side-js)
+  - [Client Side Javascript](#client-side-js)
+  - [Visual Code (HTML/CSS)](#visual-htmlcss)
 - [Hardware](#Hardware)
+  - [Hardware List](#hardware-list)
+  - [Raspberry Pi Configuration](#raspberry-pi-configuration)
 - [Resources](#Resources)
+  - [General Resources](#general-resources)
+  - [Javascript/HTML/CSS](#javascripthtmlcss)
+  - [Node/NPM](#nodenpm)
+  - [git](#git)
+  - [Shell/Scripts](#shellscripts)
+  - [Libraries](#libraries)
+  - [Other](#other)
 - [Final Words](#Final-Words)
 
 # Overview
@@ -28,19 +40,41 @@ hardware can be found in the [hardware](#hardware) section of this document.
 The software for this project is a Node.js app that primarily uses the Express and Socket.io 
 frameworks, more information about these can be found in the [software](#software) section  
 
-I have left educational and referential resources that can be found in the [resources](#resources) section,
-while some of these are general, the majority of them are in reference to specific section(s) of code, which will
-all contain a comment like this.    
+I have left educational and referential resources that can be found in the [resources](#resources) 
+section, while some of these resources are general, the majority of them are in reference to 
+specific section(s) of code, which will all contain a comment like this.    
 `//more information about this can be found in the readme file`
 
 
 # Software
 
+### Server Side (JS)
+
+### Client Side (JS)
+
+### Visual (HTML/CSS)
 
 # Hardware
 
+### Hardware List
+
+### Raspberry Pi Configuration
 
 # Resources
+
+### General Resources
+
+### Javascript/HTML/CSS
+
+### Node/NPM
+
+### git
+
+### Shell/Scripts
+
+### Libraries
+
+### Other
 
 
 # Final Words
