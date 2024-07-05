@@ -29,7 +29,7 @@ The software for this project is a Node.js app that primarily uses the Express a
 frameworks, more information about these can be found in the [software](#software) section  
 
 I have left educational and referential resources that can be found in the [resources](#resources) section,
-while some of these are general, the majority of them are in reference to specific section(s) of code code, which will
+while some of these are general, the majority of them are in reference to specific section(s) of code, which will
 all contain a comment like this.    
 `//more information about this can be found in the readme file`
 
