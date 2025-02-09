@@ -1,8 +1,8 @@
 //TODO Store letter day on server
 
 const socket = io();
-const letterDays = ["A", "B", "C", "D", "E", "F"]; //Used to make day progression easier
-let letterDayIndex = 0; //Keeps track of letter days array
+const letterDays = ["A", "B", "C", "D", "E", "F"]; // Used to make day progression easier
+let letterDayIndex = 0; // Keeps track of letter days array
 let previousDay = new Date().getDate(); // Used to track day changes to progress letter day
 const modTimes = [ //start and end times for normal day
     { start: '08:25:00', end: '08:44:59' },
@@ -23,7 +23,7 @@ const modTimes = [ //start and end times for normal day
     { start: '14:00:00', end: '14:24:59' },
     { start: '14:25:00', end: '14:44:59' },
     { start: '14:45:00', end: '15:09:59' }
-]
+];
 const wedModTimes = [ //start and end times for wednesday
     { start: '09:10', end: '09:29:59' },
     { start: '09:30', end: '09:49:59' },
@@ -45,15 +45,25 @@ const wedModTimes = [ //start and end times for wednesday
     { start: '14:50', end: '15:09:59' }
 ];
 
+/**
+ * [Sends a request to the server ]
+ *
+ */
 function updateLetterDay() {
     socket.emit("get-letter-day", (callback) => {
         letterDayIndex = callback;
         document.getElementById("letter-text").textContent = letterDays[letterDayIndex] + "-Day";
-    })
+    });
 }
+
+/**
+ * Sends a request to the server to write the current letter day.
+ * @param {number} day - The index of the current letter day.
+ */
 function writeLetterDay(day) {
-    socket.emit("write-letter-day", (day))
+    socket.emit("write-letter-day", day);
 }
+
 document.addEventListener("DOMContentLoaded", function() { //execute code after all the page content is loaded
     document.addEventListener('keydown', function(e) {
         if (e.repeat) return; // Prevent multiple triggers on long press
@@ -67,50 +77,75 @@ document.addEventListener("DOMContentLoaded", function() { //execute code after 
 
     socket.on('update-theme', (theme) => {
         document.documentElement.style.setProperty("--background", theme);
-    })
+    });
 
-    function startTime() { //Starts loop, functions as all-encompassing init function
+    /**
+     * Starts the primary loop that drives the whole clock, functions as all-encompassing init function.
+     */
+    function startTime() {
         const today = new Date(); //creates a new time object
         let h = today.getHours();
         let m = today.getMinutes();
         let s = today.getSeconds();
 
-        let ampm = " " + (h >= 12 ? 'PM' : 'AM'); //Get AM/PM Value, this notation is called a ternary operator saying that if h>=12, return PM else return AM, there is a more advanced usage of this notation in a few lines
+        let ampm = " " + (h >= 12 ? 'PM' : 'AM'); //Get AM/PM Value, this notation is called a ternary operator, saying that if h>=12, return PM else return AM, there is a more advanced usage of this notation in a few lines
 
-        h %= 12; //Converts from 24hr time to 12hr, in other terms, h  is equal to the remainder of h divided by 12 (remember that the %= is a shorthand for
+        h %= 12; //Converts from 24hr time to 12hr, in other terms, h  is equal to the remainder of h divided by 12
 
         h = h ? h : 12; // changes '0' o'clock to 12 o'clock (this works because javascript can interpret the number 0 as a false boolean since it is dynamically typed), writing an expression in this format is called a ternary operator
         // A ternary operator can be read as {condition ? resultIfTrue : resultIfFalse}
 
-        m = checkTime(m); //format minutes value
-        s = checkTime(s); //format seconds value
-        updateLetterDay()
+        m = formatTime(m); //format minutes value
+        s = formatTime(s); //format seconds value
+        updateLetterDay();
         document.getElementById("live-time").textContent = h + ":" + m + ":" + s + " " + ampm; //set timer text value
         document.getElementById("mod-text").textContent = "Mod " + getTimeSlot(); //set mod number text value
         setProgress(getElapsedTimePercentage()); //update progress bar position
         setTimeout(startTime, 1000); //create a one-second delay before re-calling the function, I guess this is technically recursion
     }
 
-    function checkTime(i) {  // add zero in front of numbers < 10
+    /**
+     * Adds a zero in front of numbers less than 10.
+     * @param {number} i - The number to check.
+     * @returns {string} The formatted number.
+     */
+    function formatTime(i) {
         if (i < 10) {i = "0" + i}
-        return i;
+        return i.toString();
     }
 
+    /**
+     * Sets the progress bar width based on the given percentage.
+     * @param {number} percentage - The percentage of time elapsed.
+     */
     function setProgress(percentage) {
         const mask = document.getElementById('mask'); //get progress bar mask element
         mask.style.width = percentage + '%'; //set the mask's width property
     }
 
-    function isWednesday() { //check if today is wednesday
+    /**
+     * Checks if today is Wednesday.
+     * @returns {boolean} True if today is Wednesday, false otherwise.
+     */
+    function isWednesday() {
         const today = new Date();
         return today.getDay() === 3; // 3 corresponds to Wednesday
     }
 
+    /**
+     * Checks if today is a weekend.
+     * @returns {boolean} True if today is Saturday or Sunday, false otherwise.
+     */
     function isWeekend() {
         const today = new Date();
         return today.getDay() === 6 || today.getDay() === 7; //6 and 7 correspond to Saturday and Sunday
     }
 
+    /**
+     * Converts a time string to seconds.
+     * @param {string} timeString - The time string in hh:mm:ss format.
+     * @returns {number} The time in seconds.
+     */
     function getTimeInSeconds(timeString) {
         const [hours, minutes, seconds] = timeString.split(':').map(Number);
         /* There's a lot of stuff going in this line so here's a breakdown
@@ -125,19 +160,26 @@ document.addEventListener("DOMContentLoaded", function() { //execute code after 
         //the || is used to prevent errors in the case that "seconds" is undefined, idk how that would happen it's just good practice
     }
 
+    /**
+     * Progresses to the next letter day if it's not a weekend.
+     */
     function nextLetterDay() {
         if(!isWeekend()) {
             if (letterDayIndex === 5) { //if index is five, wrap back to zero, else increase by one
                 letterDayIndex = 0;
-                writeLetterDay(letterDayIndex)
+                writeLetterDay(letterDayIndex);
             } else {
                 letterDayIndex++;
-                writeLetterDay(letterDayIndex)
+                writeLetterDay(letterDayIndex);
             }
             updateLetterDay();
         }
     }
 
+    /**
+     * Determines the current time slot based on the current time.
+     * @returns {number} The current time slot index.
+     */
     function getTimeSlot() {
         //these two variables are initialized at the top of the code to ensure they are in the correct scope
         //after they are created, we can define their values inside a conditional (if it is wednesday or not)
@@ -174,12 +216,16 @@ document.addEventListener("DOMContentLoaded", function() { //execute code after 
         return 18; // Default return if after the last time slot
     }
 
+    /**
+     * Gets the percentage of time elapsed in the current mod.
+     * @returns {number} The percentage of time elapsed.
+     */
     function getElapsedTimePercentage() { //get percent of time elapsed in current mod
         let timeSlots;
         if(isWednesday()) { //determine which schedule to use
-            timeSlots = wedModTimes
+            timeSlots = wedModTimes;
         } else {
-            timeSlots = modTimes
+            timeSlots = modTimes;
         }
         const now = new Date(); //create new timestamp
         const nowInSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds(); //convert to seconds
@@ -198,4 +244,4 @@ document.addEventListener("DOMContentLoaded", function() { //execute code after 
     }
 
     startTime(); //begin the main loop
-})
+});
