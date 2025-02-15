@@ -20,6 +20,22 @@ body {
     grid-row-gap: 0;
 }
 
+/* Existing CSS... */
+
+.hosted-at {
+    grid-area: 1 / 2 / 2 / 3; /* Position in the top right corner */
+    justify-content: flex-end; /* Align text to the right */
+    align-items: flex-start; /* Align text to the top */
+    padding-right: 30px; /* Add some padding */
+    padding-top: 30px; /* Add some padding */
+}
+
+#hostedAt {
+    font-size: 60px;
+    color: black; /* Set text color */
+}
+
+/* Existing CSS... */
 
 .body-div {
     display: flex;

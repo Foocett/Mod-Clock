@@ -46,6 +46,17 @@ const wedModTimes = [ //start and end times for wednesday
 ];
 
 /**
+ * Requests the server's IP address and updates the "hostedAt" text block.
+ */
+function updateHostedAtText() {
+    socket.emit('get-server-ip', (ip) => {
+        // Update the text content of the "hostedAt" element
+        document.getElementById('hostedAt').textContent = `Hosted at ${ip}`;
+    });
+}
+
+
+/**
  * [Sends a request to the server ]
  *
  */
@@ -65,6 +76,9 @@ function writeLetterDay(day) {
 }
 
 document.addEventListener("DOMContentLoaded", function() { //execute code after all the page content is loaded
+    
+    updateHostedAtText();
+
     document.addEventListener('keydown', function(e) {
         if (e.repeat) return; // Prevent multiple triggers on long press
         const bodyStyle = document.body.style;
