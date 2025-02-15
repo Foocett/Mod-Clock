@@ -53,7 +53,7 @@ const wedModTimes = [
 function updateHostedAtText() {
   socket.emit("get-server-ip", (ip) => {
     // Update the text content of the "hostedAt" element
-    document.getElementById("hostedAt").textContent = `Hosted at ${ip}`;
+    document.getElementById("hostedAt").textContent = `Hosted at ${ip}:3000`;
   });
 }
 
