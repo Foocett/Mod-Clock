@@ -1,142 +1,150 @@
-
 :root {
-    --background: linear-gradient(to top, #505285 0%, #585e92 12%, #65689f 25%, #7474b0 37%, #7e7ebb 50%, #8389c7 62%, #9795d4 75%, #a2a1dc 87%, #b5aee4 100%)
+  --background: linear-gradient(
+    to top,
+    #505285 0%,
+    #585e92 12%,
+    #65689f 25%,
+    #7474b0 37%,
+    #7e7ebb 50%,
+    #8389c7 62%,
+    #9795d4 75%,
+    #a2a1dc 87%,
+    #b5aee4 100%
+  );
 }
 
 html {
-    background-image: var(--background);
+  background-image: var(--background);
 }
 
 body {
-    cursor: none;
-    display: grid;
-    width: 3840px;
-    height: 1100px;
-    background-color: rgba(0,0,0,.25);
-    margin: 0;
-    grid-template-columns: .3fr 1fr;
-    grid-template-rows: repeat(3, 1fr) 1.5fr 1fr;
-    grid-column-gap: 0;
-    grid-row-gap: 0;
+  cursor: none;
+  display: grid;
+  width: 3840px;
+  height: 1100px;
+  background-color: rgba(0, 0, 0, 0.25);
+  margin: 0;
+  grid-template-columns: 0.3fr 1fr;
+  grid-template-rows: repeat(3, 1fr) 1.5fr 1fr;
+  grid-column-gap: 0;
+  grid-row-gap: 0;
 }
 
 /* Existing CSS... */
 
 .hosted-at {
-    grid-area: 1 / 2 / 2 / 3; /* Position in the top right corner */
-    justify-content: flex-end; /* Align text to the right */
-    align-items: flex-start; /* Align text to the top */
-    padding-right: 30px; /* Add some padding */
-    padding-top: 30px; /* Add some padding */
+  grid-area: 1 / 2 / 2 / 3; /* Position in the top right corner */
+  justify-content: flex-end; /* Align text to the right */
+  align-items: flex-start; /* Align text to the top */
+  padding-right: 30px; /* Add some padding */
+  padding-top: 30px; /* Add some padding */
 }
 
 #hostedAt {
-    font-size: 60px;
-    color: black; /* Set text color */
+  font-size: 60px;
+  color: black; /* Set text color */
 }
 
 /* Existing CSS... */
 
 .body-div {
-    display: flex;
-    /*border: solid 1px black*/
+  display: flex;
+  /*border: solid 1px black*/
 }
 
 .letter-day {
-    grid-area: 1 / 1 / 2 / 3;
-    align-items: flex-end;
-    justify-content: center;
-    padding-left: 30px;
-    display: flex;
+  grid-area: 1 / 1 / 2 / 3;
+  align-items: flex-end;
+  justify-content: center;
+  padding-left: 30px;
+  display: flex;
 }
 
 #letter-text {
-    font-size: 162px;
-    height: min-content;
+  font-size: 162px;
+  height: min-content;
 }
 
 .mod-number {
-    grid-area: 2 / 1 / 4 / 3;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-
+  grid-area: 2 / 1 / 4 / 3;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 #mod-text {
-    font-size: 220px;
+  font-size: 220px;
 }
 
 .real-time {
-    grid-area: 4 / 1 / 5 / 3;
-    justify-content: center;
-    align-items: center;
+  grid-area: 4 / 1 / 5 / 3;
+  justify-content: center;
+  align-items: center;
 }
 
 .scroll-bar {
-    grid-area: 5 / 1 / 6 / 3;
-    justify-content: center;
-    align-items: center;
+  grid-area: 5 / 1 / 6 / 3;
+  justify-content: center;
+  align-items: center;
 }
 
 #progress-container {
-    border: solid 8px black;
-    width: 85%;
-    height: 65%;
-    border-radius: 120px;
-    overflow: hidden;
-    position: relative;
+  border: solid 8px black;
+  width: 85%;
+  height: 65%;
+  border-radius: 120px;
+  overflow: hidden;
+  position: relative;
 }
 
 #progress-bar {
-    height: 100%;
-    width: 100%;
-    background-color: #444141;
-    text-align: center;
-    line-height: 30px;
-    color: white;
-    border-radius: 120px 0 0 120px;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    overflow: hidden;
+  height: 100%;
+  width: 100%;
+  background-color: #444141;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+  border-radius: 120px 0 0 120px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  overflow: hidden;
 }
 
 #wave {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 200%; /* Double the width for smooth looping */
-    background: url("Assets/waveBar.svg") repeat-x;
-    animation: wave-animation 5s linear infinite;
-    background-size: 50% 100%;
-    transition: transform 0.5s linear;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 200%; /* Double the width for smooth looping */
+  background: url("Assets/waveBar.svg") repeat-x;
+  animation: wave-animation 5s linear infinite;
+  background-size: 50% 100%;
+  transition: transform 0.5s linear;
 }
 
 #mask {
-    height: 100%;
-    width: 70%;
-    background-color: inherit;
-    overflow: hidden;
-    clip-path: inset(0 0 0 0);
+  height: 100%;
+  width: 70%;
+  background-color: inherit;
+  overflow: hidden;
+  clip-path: inset(0 0 0 0);
 }
 
 @keyframes wave-animation {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0%);
-    }
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 p {
-    margin: 0;
-    font-size: 90px;
+  margin: 0;
+  font-size: 90px;
 }
 
 #live-time {
-    font-size: 240px;
+  font-size: 240px;
 }
-

@@ -1,37 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--suppress HtmlUnknownTarget -->
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=3840, height=1100,initial-scale=1.0">
-        <title>Mod Clock</title>
-        <script src="socket.io/socket.io.js"></script>
-        <script src="clock.js"></script>
-        <link rel="stylesheet" href="clock.css">
-        <link rel="stylesheet" href="font-families.css">
-    </head>
-    <body>
-        <div class="body-div hosted-at">
-            <p id="hostedAt">Hosted at Location</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=3840, height=1100,initial-scale=1.0" />
+    <title>Mod Clock</title>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="clock.js"></script>
+    <link rel="stylesheet" href="clock.css" />
+    <link rel="stylesheet" href="font-families.css" />
+  </head>
+  <body>
+    <div class="body-div hosted-at">
+      <p id="hostedAt">Hosted at Location</p>
+    </div>
+
+    <div class="body-div letter-day">
+      <p id="letter-text">A-Day</p>
+    </div>
+    <div class="body-div mod-number">
+      <p id="mod-text">Mod --</p>
+    </div>
+    <div class="body-div real-time">
+      <p id="live-time">Time</p>
+    </div>
+    <div class="body-div scroll-bar">
+      <div id="progress-container">
+        <div id="mask">
+          <div id="progress-bar">
+            <div id="wave"></div>
+          </div>
         </div>
-        
-        <div class="body-div letter-day">
-            <p id="letter-text">A-Day</p>
-        </div>
-        <div class="body-div mod-number">
-            <p id="mod-text">Mod --</p>
-        </div>
-        <div class="body-div real-time">
-            <p id="live-time">Time</p>
-        </div>
-        <div class="body-div scroll-bar">
-            <div id="progress-container">
-                <div id="mask">
-                    <div id="progress-bar">
-                        <div id="wave"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </body>
+      </div>
+    </div>
+  </body>
 </html>
