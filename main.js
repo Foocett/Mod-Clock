@@ -4,6 +4,7 @@
 const port = 3000; // Port that the webserver will be hosted on
 
 // Import the necessary modules
+const { exec } = require('child_process') // Builtin module used for running command line commands
 const fs = require('fs'); // Builtin Node.js module for managing files ('fs' stands for file system), used in this case to read JSON files
 const express = require('express'); // Express is a web framework for Node.js that allows us to create more advanced websites, see the README file for more information
 const http = require('http'); // Builtin Node.js module for creating HTTP servers
@@ -22,6 +23,45 @@ app.use(express.json());
 
 const SimpleCrypto = require("simple-crypto-js").default;
 let crypto = new SimpleCrypto("javascript-is-mid"); // Initialize SimpleCrypto with a secret key
+
+function getLocalIP(callback) {
+    exec('ip addr', (error, stdout, stderr) => {
+        if (error) {
+            callback(`Error executing command: ${error.message}`, null);
+            return;
+        }
+
+        if (stderr) {
+            callback(`Command stderr: ${stderr}`, null);
+            return;
+        }
+
+        // Regular expression to match the IPv4 address
+        const ipv4Regex = /inet\s+(\d+\.\d+\.\d+\.\d+)\/\d+\s+brd\s+\d+\.\d+\.\d+\.\d+\s+scope\s+global\s+dynamic\s+noprefixroute/;
+
+        // Split the output by lines and find the line that matches the regex
+        const lines = stdout.split('\n');
+        for (const line of lines) {
+            const match = line.match(ipv4Regex);
+            if (match) {
+                callback(null, match[1]); // Pass the IPv4 address to the callback
+                return;
+            }
+        }
+
+        // If no IPv4 address is found
+        callback('No IPv4 address found.', null);
+    });
+}
+
+// Example usage:
+getLocalIP((error, ipWithPort) => {
+    if (error) {
+        console.error(error); // Handle the error
+    } else {
+        console.log(`Server is running at: http://${ipWithPort}`); // Use the IP with port
+    }
+});
 
 // Read config data from JSON file
 const config = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
