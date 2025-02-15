@@ -183,6 +183,17 @@ function logUserActivity(username, type) {
 io.on('connection', (socket) => {
     console.log('A user connected');
 
+    // Handle request for server IP address
+    socket.on('get-server-ip', (callback) => {
+        getLocalIP((error, ip) => {
+            if (error) {
+                console.error('Error getting IP address:', error);
+                callback('Error retrieving IP address');
+            } else {
+                callback(ip); // Send the IP address to the client
+            }
+        });
+    });
     /**
      * Handle get-letter-day event from the client.
      * @param {Function} callback - The callback function to send the letter day index to the client.
